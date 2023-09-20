@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.TeacherCourseMapper">
+    <resultMap id="BaseResultMap" type="com.ruoyi.student.pojo.TeacherCourse">
+        <id column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <id column="course_id" jdbcType="INTEGER" property="courseId"/>
+        <result column="teacher_no" jdbcType="VARCHAR" property="teacherNo"/>
+        <result column="term" jdbcType="VARCHAR" property="term"/>
+        <result column="courseclass_id" jdbcType="INTEGER" property="courseclassId"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+    </resultMap>
+    <resultMap id="ThreeSelectMap" type="com.ruoyi.student.pojo.ThreeSelectByTeacherId">
+        <id column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <id column="dept_id" jdbcType="INTEGER" property="deptId"/>
+        <id column="course_id" jdbcType="INTEGER" property="courseId"/>
+        <result column="teacher_no" jdbcType="INTEGER" property="teacherNo"/>
+        <result column="courseclass_id" jdbcType="INTEGER" property="courseclassId"/>
+        <result column="term" jdbcType="VARCHAR" property="term"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
+        <result column="course_no" jdbcType="VARCHAR" property="courseNo"/>
+        <result column="courseclass_id" jdbcType="INTEGER" property="courseclassId"/>
+        <result column="pingshi_percent" jdbcType="DOUBLE" property="pingshiPercent"/>
+        <result column="qimo_percent" jdbcType="DOUBLE" property="qimoPercent"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        teacher_id
+        , course_id, teacher_no, term, courseclass_id, real_name
+    </sql>
+
+    <!--根据teacherId 查询表所有符合的信息-->
+    <select id="selectAllCourseInfoByTeacherId" resultMap="ThreeSelectMap">
+        select  tc.teacher_id,tc.term, tc.real_name, tc.teacher_no,tc.courseclass_id,
+                sd.dept_name,c.course_id, c.course_name, c.dept_id, c.course_no, c.pingshi_percent, c.qimo_percent,
+                cc.courseclass_no
+        from teacher_course tc
+                 LEFT JOIN course c on tc.course_id = c.course_id
+                 LEFT JOIN sys_dept sd on c.dept_id = sd.dept_id
+                 LEFT JOIN courseclass cc on cc.courseclass_id = tc.courseclass_id
+        where tc.teacher_id = #{teacherId} and c.del_flag != "2"
+        order by c.course_id
+            limit #{startIndex}, #{rows}
+    </select>
+
+    <!--根据老师查询所有教授课程信息数量-->
+    <select id="selectAllCourseInfoByTeacherIdSize" resultMap="ThreeSelectMap">
+        select  tc.teacher_id,tc.term, tc.real_name, tc.teacher_no,tc.courseclass_id,
+                sd.dept_name,c.course_id, c.course_name, c.dept_id, c.course_no, c.pingshi_percent, c.qimo_percent,
+                cc.courseclass_no
+        from teacher_course tc
+                 LEFT JOIN course c on tc.course_id = c.course_id
+                 LEFT JOIN sys_dept sd on c.dept_id = sd.dept_id
+                 LEFT JOIN courseclass cc on cc.courseclass_id = tc.courseclass_id
+        where tc.teacher_id = #{teacherId} and c.del_flag != "2"
+        order by c.course_id
+    </select>
+
+    <!--根据teacherId 查询表所有符合的信息-->
+    <select id="selectAllByTeacherId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from teacher_course
+        where teacher_id = #{teacherId}
+        order by teacher_id
+    </select>
+
+    <!--根据teacher_id,course_id,courseclass_id查询teacher_course 的对象-->
+    <select id="selectTeacherCourse" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from teacher_course
+        where teacher_id = #{teacherId} and course_id = #{courseId} and courseclass_id = #{courseclassId}
+        order by teacher_id
+
+    </select>
+
+    <!--删除teacher_course表的 数据-->
+    <delete id="deleteTeacherCourse">
+        delete from teacher_course
+        where teacher_id = #{teacherId} and course_id = #{courseId} and courseclass_id = #{courseclassId}
+    </delete>
+
+
+    <!--修改teacher_course表的数据-->
+    <update id="updateByTeacherCourse">
+        update teacher_course
+        set teacher_id = #{sqlTeacherCourse.teacherId}, course_id = ${sqlTeacherCourse.courseId},
+            courseclass_id = #{sqlTeacherCourse.courseclassId},
+            term = #{sqlTeacherCourse.term}, teacher_no = #{sqlTeacherCourse.teacherNo},
+            real_name = #{sqlTeacherCourse.realName}
+        where teacher_id = #{originTeacherId} and course_id = #{originCourseId} and courseclass_id = #{originCourseclassId}
+    </update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <select id="selectByPrimaryKey" parameterType="com.ruoyi.student.pojo.TeacherCourseKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher_course
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+        and course_id = #{courseId,jdbcType=INTEGER}
+    </select>
+
+
+
+    <delete id="deleteByPrimaryKey" parameterType="com.ruoyi.student.pojo.TeacherCourseKey">
+        delete
+        from teacher_course
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+          and course_id = #{courseId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.ruoyi.student.pojo.TeacherCourse">
+        insert into teacher_course (teacher_id, course_id, teacher_no,
+                                    term, courseclass_id, real_name)
+        values (#{teacherId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{teacherNo,jdbcType=VARCHAR},
+                #{term,jdbcType=VARCHAR}, #{courseclassId,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ruoyi.student.pojo.TeacherCourse">
+        insert into teacher_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null">
+                teacher_id,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="teacherNo != null">
+                teacher_no,
+            </if>
+            <if test="term != null">
+                term,
+            </if>
+            <if test="courseclassId != null">
+                courseclass_id,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null">
+                #{teacherId,jdbcType=INTEGER},
+            </if>
+            <if test="courseId != null">
+                #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="teacherNo != null">
+                #{teacherNo,jdbcType=VARCHAR},
+            </if>
+            <if test="term != null">
+                #{term,jdbcType=VARCHAR},
+            </if>
+            <if test="courseclassId != null">
+                #{courseclassId,jdbcType=INTEGER},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.student.pojo.TeacherCourse">
+        update teacher_course
+        <set>
+            <if test="teacherNo != null">
+                teacher_no = #{teacherNo,jdbcType=VARCHAR},
+            </if>
+            <if test="term != null">
+                term = #{term,jdbcType=VARCHAR},
+            </if>
+            <if test="courseclassId != null">
+                courseclass_id = #{courseclassId,jdbcType=INTEGER},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+        and course_id = #{courseId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ruoyi.student.pojo.TeacherCourse">
+        update teacher_course
+        set teacher_no     = #{teacherNo,jdbcType=VARCHAR},
+            term           = #{term,jdbcType=VARCHAR},
+            courseclass_id = #{courseclassId,jdbcType=INTEGER},
+            real_name      = #{realName,jdbcType=VARCHAR}
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+          and course_id = #{courseId,jdbcType=INTEGER}
+    </update>
+
+
+
+</mapper>

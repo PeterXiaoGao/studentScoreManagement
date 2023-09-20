@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.MetaclassMapper">
+    <resultMap id="BaseResultMap" type="com.ruoyi.student.pojo.Metaclass">
+        <id column="meataclass_id" jdbcType="INTEGER" property="meataclassId"/>
+        <result column="metaclass_no" jdbcType="VARCHAR" property="metaclassNo"/>
+        <result column="metaclass_name" jdbcType="VARCHAR" property="metaclassName"/>
+        <result column="grade" jdbcType="VARCHAR" property="grade"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        meataclass_id
+        , metaclass_no, metaclass_name, grade, dept_id, status, del_flag, create_by,
+    create_time, update_by, update_time
+    </sql>
+
+    <!--获取所有班级-->
+    <select id="selectAllMetaclass" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from metaclass order by meataclass_id limit #{startIndex},#{pageSize}
+    </select>
+
+    <!--查询所有班级数量-->
+    <select id="selectAllMetaclasses" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from metaclass where  del_flag != "2" order by meataclass_id
+    </select>
+
+
+    <!--获取学院下所有的班级-->
+    <select id="selectCollegeMetaclasses" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from metaclass where dept_id = #{deptId} and del_flag != "2"
+        order by meataclass_id
+        limit #{startIndex}, #{rows}
+    </select>
+
+    <!--获取学院所有班级信息数量-->
+    <select id="selectCollegeMetaclassesSize" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from metaclass where dept_id = #{deptId} and del_flag != "2"
+        order by meataclass_id
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from metaclass
+        where meataclass_id = #{meataclassId,jdbcType=INTEGER}
+    </select>
+
+
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from metaclass
+        where meataclass_id = #{meataclassId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.ruoyi.student.pojo.Metaclass">
+        insert into metaclass (meataclass_id, metaclass_no, metaclass_name,
+                               grade, dept_id, status,
+                               del_flag, create_by, create_time,
+                               update_by, update_time)
+        values (#{meataclassId,jdbcType=INTEGER}, #{metaclassNo,jdbcType=VARCHAR}, #{metaclassName,jdbcType=VARCHAR},
+                #{grade,jdbcType=VARCHAR}, #{deptId,jdbcType=BIGINT}, #{status,jdbcType=CHAR},
+                #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ruoyi.student.pojo.Metaclass">
+        insert into metaclass
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="meataclassId != null">
+                meataclass_id,
+            </if>
+            <if test="metaclassNo != null">
+                metaclass_no,
+            </if>
+            <if test="metaclassName != null">
+                metaclass_name,
+            </if>
+            <if test="grade != null">
+                grade,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="meataclassId != null">
+                #{meataclassId,jdbcType=INTEGER},
+            </if>
+            <if test="metaclassNo != null">
+                #{metaclassNo,jdbcType=VARCHAR},
+            </if>
+            <if test="metaclassName != null">
+                #{metaclassName,jdbcType=VARCHAR},
+            </if>
+            <if test="grade != null">
+                #{grade,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.student.pojo.Metaclass">
+        update metaclass
+        <set>
+            <if test="metaclassNo != null">
+                metaclass_no = #{metaclassNo,jdbcType=VARCHAR},
+            </if>
+            <if test="metaclassName != null">
+                metaclass_name = #{metaclassName,jdbcType=VARCHAR},
+            </if>
+            <if test="grade != null">
+                grade = #{grade,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where meataclass_id = #{meataclassId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ruoyi.student.pojo.Metaclass">
+        update metaclass
+        set metaclass_no   = #{metaclassNo,jdbcType=VARCHAR},
+            metaclass_name = #{metaclassName,jdbcType=VARCHAR},
+            grade          = #{grade,jdbcType=VARCHAR},
+            dept_id        = #{deptId,jdbcType=BIGINT},
+            status         = #{status,jdbcType=CHAR},
+            del_flag       = #{delFlag,jdbcType=CHAR},
+            create_by      = #{createBy,jdbcType=VARCHAR},
+            create_time    = #{createTime,jdbcType=TIMESTAMP},
+            update_by      = #{updateBy,jdbcType=VARCHAR},
+            update_time    = #{updateTime,jdbcType=TIMESTAMP}
+        where meataclass_id = #{meataclassId,jdbcType=INTEGER}
+    </update>
+</mapper>

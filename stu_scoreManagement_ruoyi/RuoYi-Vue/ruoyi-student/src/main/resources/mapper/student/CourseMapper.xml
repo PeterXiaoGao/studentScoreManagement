@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.CourseMapper">
+    <resultMap id="BaseResultMap" type="com.ruoyi.student.pojo.Course">
+        <id column="course_id" jdbcType="INTEGER" property="courseId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="course_no" jdbcType="VARCHAR" property="courseNo"/>
+        <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
+        <result column="course_type" jdbcType="CHAR" property="courseType"/>
+        <result column="pingshi_percent" jdbcType="DOUBLE" property="pingshiPercent"/>
+        <result column="qimo_percent" jdbcType="DOUBLE" property="qimoPercent"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        course_id
+        , dept_id, status, del_flag, create_by, create_time, update_by, update_time,
+    course_no, course_name, course_type, pingshi_percent, qimo_percent
+    </sql>
+
+
+    <!--查询所有的课程-->
+    <select id="selectAllCourse" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from course d
+        where del_flag != "2"
+        ${params.dataScope}
+        order by course_id
+
+
+    </select>
+
+    <!--通过部门id查询课程信息-->
+    <select id="selectCourseByDeptId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from course where  dept_id = #{deptId} order by course_id  limit #{startIndex}, #{rows}
+    </select>
+
+    <select id="selectAllCoursesByDeptId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from course where  dept_id = #{deptId} and del_flag != "2" order by course_id
+    </select>
+
+
+    <!--查询所有课程-->
+    <select id="selectAllCourses" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from course d where del_flag != "2"
+        ${params.dataScope}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from course
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from course
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.ruoyi.student.pojo.Course">
+        insert into course (course_id, dept_id, status,
+                            del_flag, create_by, create_time,
+                            update_by, update_time, course_no,
+                            course_name, course_type, pingshi_percent,
+                            qimo_percent)
+        values (#{courseId,jdbcType=INTEGER}, #{deptId,jdbcType=BIGINT}, #{status,jdbcType=CHAR},
+                #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{courseNo,jdbcType=VARCHAR},
+                #{courseName,jdbcType=VARCHAR}, #{courseType,jdbcType=CHAR}, #{pingshiPercent,jdbcType=DOUBLE},
+                #{qimoPercent,jdbcType=DOUBLE})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ruoyi.student.pojo.Course">
+        insert into course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="courseNo != null">
+                course_no,
+            </if>
+            <if test="courseName != null">
+                course_name,
+            </if>
+            <if test="courseType != null">
+                course_type,
+            </if>
+            <if test="pingshiPercent != null">
+                pingshi_percent,
+            </if>
+            <if test="qimoPercent != null">
+                qimo_percent,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">
+                #{courseId,jdbcType=INTEGER},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="courseNo != null">
+                #{courseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="courseName != null">
+                #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="courseType != null">
+                #{courseType,jdbcType=CHAR},
+            </if>
+            <if test="pingshiPercent != null">
+                #{pingshiPercent,jdbcType=DOUBLE},
+            </if>
+            <if test="qimoPercent != null">
+                #{qimoPercent,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.student.pojo.Course">
+        update course
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="courseNo != null">
+                course_no = #{courseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="courseName != null">
+                course_name = #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="courseType != null">
+                course_type = #{courseType,jdbcType=CHAR},
+            </if>
+            <if test="pingshiPercent != null">
+                pingshi_percent = #{pingshiPercent,jdbcType=DOUBLE},
+            </if>
+            <if test="qimoPercent != null">
+                qimo_percent = #{qimoPercent,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ruoyi.student.pojo.Course">
+        update course
+        set dept_id         = #{deptId,jdbcType=BIGINT},
+            status          = #{status,jdbcType=CHAR},
+            del_flag        = #{delFlag,jdbcType=CHAR},
+            create_by       = #{createBy,jdbcType=VARCHAR},
+            create_time     = #{createTime,jdbcType=TIMESTAMP},
+            update_by       = #{updateBy,jdbcType=VARCHAR},
+            update_time     = #{updateTime,jdbcType=TIMESTAMP},
+            course_no       = #{courseNo,jdbcType=VARCHAR},
+            course_name     = #{courseName,jdbcType=VARCHAR},
+            course_type     = #{courseType,jdbcType=CHAR},
+            pingshi_percent = #{pingshiPercent,jdbcType=DOUBLE},
+            qimo_percent    = #{qimoPercent,jdbcType=DOUBLE}
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </update>
+</mapper>

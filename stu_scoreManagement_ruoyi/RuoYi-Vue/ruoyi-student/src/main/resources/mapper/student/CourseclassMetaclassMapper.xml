@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.CourseclassMetaclassMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.student.pojo.CourseclassMetaclassKey">
+    <id column="courseclass_id" jdbcType="INTEGER" property="courseclassId" />
+    <id column="metaclass_id" jdbcType="INTEGER" property="metaclassId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.ruoyi.student.pojo.CourseclassMetaclassKey">
+    delete from courseclass_metaclass
+    where courseclass_id = #{courseclassId,jdbcType=INTEGER}
+      and metaclass_id = #{metaclassId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.student.pojo.CourseclassMetaclassKey">
+    insert into courseclass_metaclass (courseclass_id, metaclass_id)
+    values (#{courseclassId,jdbcType=INTEGER}, #{metaclassId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.student.pojo.CourseclassMetaclassKey">
+    insert into courseclass_metaclass
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseclassId != null">
+        courseclass_id,
+      </if>
+      <if test="metaclassId != null">
+        metaclass_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseclassId != null">
+        #{courseclassId,jdbcType=INTEGER},
+      </if>
+      <if test="metaclassId != null">
+        #{metaclassId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.TeacherMapper">
+    <resultMap id="BaseResultMap" type="com.ruoyi.student.pojo.Teacher">
+        <id column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="teacher_no" jdbcType="VARCHAR" property="teacherNo"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="gender" jdbcType="VARCHAR" property="gender"/>
+        <result column="evaluate_score" jdbcType="VARCHAR" property="evaluateScore"/>
+        <result column="evaluate_state" jdbcType="VARCHAR" property="evaluateState"/>
+        <result column="academic_title" jdbcType="VARCHAR" property="academicTitle"/>
+        <result column="internal" jdbcType="CHAR" property="internal"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        teacher_id
+        , dept_id, status, del_flag, create_by, create_time, update_by, update_time,
+    teacher_no, real_name, gender, evaluate_score, evaluate_state, academic_title, internal,
+    user_id
+    </sql>
+
+    <!--查询所有老师-->
+    <select id="selectAllTeacher" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from teacher order by teacher_id limit #{startIndex},#{rows}
+    </select>
+
+    <!--获取所有教师-->
+    <select id="selectAllTeachers" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from teacher where del_flag != "2" order by teacher_id
+    </select>
+
+    <!--根据学院id查询本学院下的所有教师-->
+    <select id="selectCollageTeacheres" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher where dept_id = #{deptId} and del_flag != "2"
+        order by teacher_id
+        limit #{startIndex},#{rows}
+    </select>
+
+    <!--获取学院下所有教师-->
+    <select id="selectCollageTeacheresSize" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher where dept_id = #{deptId} and del_flag != "2"
+        order by teacher_id
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </select>
+
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from teacher
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.ruoyi.student.pojo.Teacher">
+        insert into teacher (teacher_id, dept_id, status,
+                             del_flag, create_by, create_time,
+                             update_by, update_time, teacher_no,
+                             real_name, gender, evaluate_score,
+                             evaluate_state, academic_title, internal,
+                             user_id)
+        values (#{teacherId,jdbcType=INTEGER}, #{deptId,jdbcType=BIGINT}, #{status,jdbcType=CHAR},
+                #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{teacherNo,jdbcType=VARCHAR},
+                #{realName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{evaluateScore,jdbcType=VARCHAR},
+                #{evaluateState,jdbcType=VARCHAR}, #{academicTitle,jdbcType=VARCHAR}, #{internal,jdbcType=CHAR},
+                #{userId,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ruoyi.student.pojo.Teacher">
+        insert into teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null">
+                teacher_id,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="teacherNo != null">
+                teacher_no,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="evaluateScore != null">
+                evaluate_score,
+            </if>
+            <if test="evaluateState != null">
+                evaluate_state,
+            </if>
+            <if test="academicTitle != null">
+                academic_title,
+            </if>
+            <if test="internal != null">
+                internal,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null">
+                #{teacherId,jdbcType=INTEGER},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="teacherNo != null">
+                #{teacherNo,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="evaluateScore != null">
+                #{evaluateScore,jdbcType=VARCHAR},
+            </if>
+            <if test="evaluateState != null">
+                #{evaluateState,jdbcType=VARCHAR},
+            </if>
+            <if test="academicTitle != null">
+                #{academicTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="internal != null">
+                #{internal,jdbcType=CHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.student.pojo.Teacher">
+        update teacher
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="teacherNo != null">
+                teacher_no = #{teacherNo,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="evaluateScore != null">
+                evaluate_score = #{evaluateScore,jdbcType=VARCHAR},
+            </if>
+            <if test="evaluateState != null">
+                evaluate_state = #{evaluateState,jdbcType=VARCHAR},
+            </if>
+            <if test="academicTitle != null">
+                academic_title = #{academicTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="internal != null">
+                internal = #{internal,jdbcType=CHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ruoyi.student.pojo.Teacher">
+        update teacher
+        set dept_id        = #{deptId,jdbcType=BIGINT},
+            status         = #{status,jdbcType=CHAR},
+            del_flag       = #{delFlag,jdbcType=CHAR},
+            create_by      = #{createBy,jdbcType=VARCHAR},
+            create_time    = #{createTime,jdbcType=TIMESTAMP},
+            update_by      = #{updateBy,jdbcType=VARCHAR},
+            update_time    = #{updateTime,jdbcType=TIMESTAMP},
+            teacher_no     = #{teacherNo,jdbcType=VARCHAR},
+            real_name      = #{realName,jdbcType=VARCHAR},
+            gender         = #{gender,jdbcType=VARCHAR},
+            evaluate_score = #{evaluateScore,jdbcType=VARCHAR},
+            evaluate_state = #{evaluateState,jdbcType=VARCHAR},
+            academic_title = #{academicTitle,jdbcType=VARCHAR},
+            internal       = #{internal,jdbcType=CHAR},
+            user_id        = #{userId,jdbcType=BIGINT}
+        where teacher_id = #{teacherId,jdbcType=INTEGER}
+    </update>
+</mapper>

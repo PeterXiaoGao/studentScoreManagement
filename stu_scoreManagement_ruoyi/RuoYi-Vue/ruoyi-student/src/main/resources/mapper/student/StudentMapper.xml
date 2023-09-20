@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.StudentMapper">
+    <resultMap id="BaseResultMap" type="com.ruoyi.student.pojo.Student">
+        <id column="student_id" property="studentId"/>
+        <result column="meataclass_id"  property="meataclassId"/>
+        <result column="status" property="status"/>
+        <result column="del_flag"  property="delFlag"/>
+        <result column="create_by"  property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by"  property="updateBy"/>
+        <result column="update_time"  property="updateTime"/>
+        <result column="student_no"  property="studentNo"/>
+        <result column="real_name" property="realName"/>
+        <result column="gender" property="gender"/>
+        <result column="grade" property="grade" />
+        <result column="user_id" property="userId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        student_id
+        ,meataclass_id,status,del_flag,create_by,create_time,update_by,update_time,student_no,real_name,gender,grade,user_id
+    </sql>
+
+    <!--通过学生id查询学生-->
+    <select id="selectByStudentId" resultType="com.ruoyi.student.pojo.Student">
+        select
+        <include refid="Base_Column_List"></include>
+        from student where student_id = #{studentId}
+    </select>
+
+    <!--查询学生所有的课程 和课程对应的学院-->
+    <select id="selectStudentAllCourseScore" resultType="com.ruoyi.student.pojo.entity.StudentScore">
+        SELECT
+            cls.student_id,
+            cls.courseclass_id,
+            cls.pingshi_score,
+            cls.qimo_score,
+            cls.zongping_score,
+            ccl.courseclass_no,
+            c.course_id,
+            c.dept_id,
+            c.course_no,
+            c.course_name,
+            c.pingshi_percent,
+            c.qimo_percent,
+            sd.dept_name
+        FROM
+            courseclass_student cls
+                LEFT JOIN courseclass ccl ON cls.courseclass_id = ccl.courseclass_id
+                LEFT JOIN course c ON ccl.course_id = c.course_id and c.del_flag = "0"
+                LEFT JOIN sys_dept sd ON c.dept_id = sd.dept_id
+        WHERE
+            student_id = #{studentId}
+        ORDER BY
+            cls.student_id
+            LIMIT #{startIndex},#{rows}
+    </select>
+
+    <!--根据学生id查询所有课程-->
+    <select id="selectStudentAllCourseScores" resultType="com.ruoyi.student.pojo.entity.StudentScore">
+        SELECT
+            cls.student_id,
+            cls.courseclass_id,
+            cls.pingshi_score,
+            cls.qimo_score,
+            cls.zongping_score,
+            ccl.courseclass_no,
+            c.course_id,
+            c.dept_id,
+            c.course_no,
+            c.course_name,
+            c.pingshi_percent,
+            c.qimo_percent,
+            sd.dept_name
+        FROM
+            courseclass_student cls
+                LEFT JOIN courseclass ccl ON cls.courseclass_id = ccl.courseclass_id
+                LEFT JOIN course c ON ccl.course_id = c.course_id and c.del_flag = "0"
+                LEFT JOIN sys_dept sd ON c.dept_id = sd.dept_id
+        WHERE
+            student_id = #{studentId}
+        ORDER BY
+            cls.student_id
+    </select>
+
+
+    <!--查询所有的学生-->
+    <select id="selectAllStudent" resultType="com.ruoyi.student.pojo.Student">
+    <!--<select id="selectAllStudent" resultMap="BaseResultMap">-->
+        select <include refid="Base_Column_List"></include>
+            from student order by student_id limit #{startIndex},#{rows}
+    </select>
+
+    <select id="selectAllStudentCourse" resultType="com.ruoyi.student.pojo.Course">
+        select c.*
+        from courseclass_student cls
+                 LEFT JOIN courseclass cl on cls.courseclass_id = cl.courseclass_id and cl.del_flag != "2"
+                 LEFT JOIN course c on  c.course_id = cl.course_id and c.del_flag != "2"
+        where student_id = #{studentId}
+        order by c.course_id
+        limit #{startIndex}, #{rows}
+    </select>
+    <select id="selectAll" resultType="com.ruoyi.student.pojo.Student">
+        select <include refid="Base_Column_List"></include>
+        from student where del_flag != "2" order by student_id
+    </select>
+    <select id="selectAllStudentCourses" resultType="com.ruoyi.student.pojo.Course">
+        select c.*
+        from courseclass_student cls
+                 LEFT JOIN courseclass cl on cls.courseclass_id = cl.courseclass_id and cl.del_flag != "2"
+                 LEFT JOIN course c on  c.course_id = cl.course_id and c.del_flag != "2"
+        where student_id = #{studentId}
+        order by c.course_id
+    </select>
+
+
+</mapper>

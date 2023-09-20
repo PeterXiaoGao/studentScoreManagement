@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.CourseclassMapper">
+  <resultMap id="BaseResultMap" type="com.ruoyi.student.pojo.Courseclass">
+    <id column="courseclass_id" jdbcType="INTEGER" property="courseclassId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="courseclass_no" jdbcType="VARCHAR" property="courseclassNo" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="term" jdbcType="VARCHAR" property="term" />
+    <result column="courseclass_score" jdbcType="VARCHAR" property="courseclassScore" />
+    <result column="courseclass_state" jdbcType="VARCHAR" property="courseclassState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    courseclass_id, course_id, courseclass_no, status, del_flag, create_by, create_time, 
+    update_by, update_time, term, courseclass_score, courseclass_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from courseclass
+    where courseclass_id = #{courseclassId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from courseclass
+    where courseclass_id = #{courseclassId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ruoyi.student.pojo.Courseclass">
+    insert into courseclass (courseclass_id, course_id, courseclass_no, 
+      status, del_flag, create_by, 
+      create_time, update_by, update_time, 
+      term, courseclass_score, courseclass_state
+      )
+    values (#{courseclassId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{courseclassNo,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{term,jdbcType=VARCHAR}, #{courseclassScore,jdbcType=VARCHAR}, #{courseclassState,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ruoyi.student.pojo.Courseclass">
+    insert into courseclass
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseclassId != null">
+        courseclass_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+      <if test="courseclassNo != null">
+        courseclass_no,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="term != null">
+        term,
+      </if>
+      <if test="courseclassScore != null">
+        courseclass_score,
+      </if>
+      <if test="courseclassState != null">
+        courseclass_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseclassId != null">
+        #{courseclassId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="courseclassNo != null">
+        #{courseclassNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="term != null">
+        #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="courseclassScore != null">
+        #{courseclassScore,jdbcType=VARCHAR},
+      </if>
+      <if test="courseclassState != null">
+        #{courseclassState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ruoyi.student.pojo.Courseclass">
+    update courseclass
+    <set>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="courseclassNo != null">
+        courseclass_no = #{courseclassNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="term != null">
+        term = #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="courseclassScore != null">
+        courseclass_score = #{courseclassScore,jdbcType=VARCHAR},
+      </if>
+      <if test="courseclassState != null">
+        courseclass_state = #{courseclassState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where courseclass_id = #{courseclassId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ruoyi.student.pojo.Courseclass">
+    update courseclass
+    set course_id = #{courseId,jdbcType=INTEGER},
+      courseclass_no = #{courseclassNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      term = #{term,jdbcType=VARCHAR},
+      courseclass_score = #{courseclassScore,jdbcType=VARCHAR},
+      courseclass_state = #{courseclassState,jdbcType=VARCHAR}
+    where courseclass_id = #{courseclassId,jdbcType=INTEGER}
+  </update>
+</mapper>
